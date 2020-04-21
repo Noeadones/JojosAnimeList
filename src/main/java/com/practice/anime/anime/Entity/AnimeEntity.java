@@ -2,6 +2,8 @@ package com.practice.anime.anime.Entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "ANIMES_TABLE")
@@ -11,22 +13,27 @@ public class AnimeEntity {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String numberOfEpisodes;
-    private ArrayList<String> genres;
-    private String episode;
-    private String status;
+    private Long numberOfEpisodes;
     private String image;
 
-    public AnimeEntity(String name, String numberOfEpisodes, ArrayList<String> genres, String episode, String status, String image) {
-        this.name = name;
-        this.numberOfEpisodes = numberOfEpisodes;
-        this.genres = genres;
-        this.episode = episode;
-        this.status = status;
-        this.image = image;
-    }
+    @OneToMany(mappedBy="animeEntity", fetch=FetchType.EAGER)
+    private List<ListAnime> listAnimes;
+
+    @ManyToMany//(fetch = FetchType.LAZY,cascade ={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+    @JoinTable(name = "anime_genres",
+                joinColumns = @JoinColumn ( name = "anime_ID"),
+                inverseJoinColumns = @JoinColumn ( name = "genre_ID"))
+    private List<GenreEntity> genreEntities;
+
 
     public AnimeEntity() {
+    }
+
+    public AnimeEntity(String name, Long numberOfEpisodes, String image) {
+        this.name = name;
+        this.numberOfEpisodes = numberOfEpisodes;
+        this.image = image;
+
     }
 
     public long getId() {
@@ -45,36 +52,12 @@ public class AnimeEntity {
         this.name = name;
     }
 
-    public String getNumberOfEpisodes() {
+    public Long getNumberOfEpisodes() {
         return numberOfEpisodes;
     }
 
-    public void setNumberOfEpisodes(String numberOfEpisodes) {
+    public void setNumberOfEpisodes(Long numberOfEpisodes) {
         this.numberOfEpisodes = numberOfEpisodes;
-    }
-
-    public ArrayList<String> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(ArrayList<String> genres) {
-        this.genres = genres;
-    }
-
-    public String getEpisode() {
-        return episode;
-    }
-
-    public void setEpisode(String episode) {
-        this.episode = episode;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getImage() {
@@ -83,5 +66,36 @@ public class AnimeEntity {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<ListAnime> getAnimeList() {
+        return listAnimes;
+    }
+
+    public void setAnimeList(List<ListAnime> animeList) {
+        this.listAnimes = animeList;
+    }
+
+    public List<ListAnime> getListAnimes() {
+        return listAnimes;
+    }
+
+    public void setListAnimes(List<ListAnime> listAnimes) {
+        this.listAnimes = listAnimes;
+    }
+
+    public List<GenreEntity> getGenreEntities() {
+        return genreEntities;
+    }
+
+    public void setGenreEntities(List<GenreEntity> genreEntities) {
+        this.genreEntities = genreEntities;
+    }
+
+    public void addGenre(GenreEntity genre){
+        if(this.genreEntities ==null)
+            this.genreEntities = new ArrayList<>();
+
+        this.genreEntities.add(genre);
     }
 }

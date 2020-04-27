@@ -1,6 +1,7 @@
 package com.practice.anime.anime.controllers;
 
 import com.practice.anime.anime.DTO.AnimeDTO;
+import com.practice.anime.anime.Entity.AnimeEntity;
 import com.practice.anime.anime.Repository.IAnime;
 import com.practice.anime.anime.services.AnimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,7 @@ public class AnimeController {
     public List<AnimeDTO> animesAll(){
         return animeService.all();
     }
+
+    @GetMapping("/hello")
+    public  String hello (){ return "Hello World";}
 }

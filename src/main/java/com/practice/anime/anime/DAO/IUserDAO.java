@@ -1,9 +1,9 @@
-package com.practice.anime.anime.Repository;
+package com.practice.anime.anime.DAO;
 
 import com.practice.anime.anime.Entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IUser extends JpaRepository<UserEntity,Long> {
+public interface IUserDAO extends JpaRepository<UserEntity,Long> {
 }
